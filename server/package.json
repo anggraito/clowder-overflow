@@ -1,0 +1,31 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "API for this app",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anggraito/clowder-overflow.git"
+  },
+  "keywords": [
+    "junior forum app",
+    "forum app with nodejs express"
+  ],
+  "author": "anggie",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/anggraito/clowder-overflow/issues"
+  },
+  "homepage": "https://github.com/anggraito/clowder-overflow#readme",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.4",
+    "express": "^4.15.4",
+    "mongodb": "^2.2.31",
+    "mongoose": "^4.11.10"
+  }
+}
