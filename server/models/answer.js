@@ -26,6 +26,5 @@ var answerSchema = new Schema({
   }]
 })
 
-var answer = mongoose.model('Answer', answerSchema)
 
-module.exports = answer;
+module.exports = answerSchema;

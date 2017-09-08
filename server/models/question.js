@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const answerSchema = require('./answer');
 
 var Schema = mongoose.Schema;
 
@@ -20,7 +21,7 @@ var questionSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  answer: [answerSchema]
+  answer: [answerSchema],
   voteup: [{
     type: Schema.Types.ObjectId,
     ref: 'User'

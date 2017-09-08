@@ -3,9 +3,8 @@ const express = require('express'),
       mongoose = require('mongoose'),
       cors = require('cors'),
       axios = require('axios');
-const user = require('./routes/user');
-      // question = require('./routes/question'),
-      // answer = require('./routes/answer');
+const user = require('./routes/user')
+const question = require('./routes/question')
 const app = express();
 const port = process.env.PORT || 3000 ;
 
@@ -20,9 +19,8 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // route setting use
-app.use('/users', user)
-// app.use('/questions', question)
-// app.use('/answer', answer)
+app.use('/', user)
+app.use('/questions', question)
 
 
 app.listen(port);

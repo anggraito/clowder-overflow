@@ -5,8 +5,9 @@ const router = express.Router();
 const modelUser = require('../controllers/user');
 
 // metode bisa get,post,put,delete jika database mongoose
-router.get('/', modelUser.findAllUser)
-router.post('/', modelUser.createUser)
-router.get('/:id', modelUser.getIdUser)
+router.get('/users', modelUser.findAllUser)
+router.post('/signup', modelUser.createUser) //register
+router.post('/signin', modelUser.loginUser)
+router.delete('/users/:id', modelUser.deleteUser)
 
 module.exports = router;
