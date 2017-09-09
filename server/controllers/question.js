@@ -21,14 +21,14 @@ var createQuestion = (req, res) => {
     question: req.body.quest,
     author: req.body.author,
     time: new Date(),
-    answer: [ ],
-    voteup: [ ],
-    voteboo: [ ]
+    answers: [],
+    voteup: [],
+    voteboo: []
   })
   .then(data => {
     res.send(`Thread " ${data.title} " berhasil dibuat`)
   })
-  .cacth(error => {
+  .catch(error => {
     res.send(error)
   })
 }
@@ -72,50 +72,20 @@ var deleteQuestion = (req, res) => {
   })
 }
 
-// var findAllAnswer = (req, res) => {
-//   db.find()
-//   .then((answers) => {
-//     res.send(answers)
-//   })
-//   .catch(err => {
-//     res.status(404).send(err)
-//   })
-// }
+var voteup = (req, res) => {
+  db.findById(req.params.id)
+  .then((quest) => {
 
-var findAnswer = (req, res) => {
-  db.findOne({_id:req.params.id})
-  .then((data) => {
-    res.send(data.answers)
-  })
-  .catch(err => {
-    res.status(500).send(err)
-  })
-}
-
-var createAnswer = (req, res) => {
-  db.findByIdAndUpdate(req.params.id, {
-    $push: {'answers' : req.body}
-  },
-  {
-    safe: true,
-    upsert: true,
-    new: true
-  })
-  .then((data) => {
-    res.send(data)
   })
   .catch(err => {
     res.send(err)
   })
 }
 
-
 module.exports = {
   findAllQuestion, 
   createQuestion, 
   getIdQuestion, 
   updateQuestion, 
-  deleteQuestion,
-  findAnswer,
-  createAnswer
+  deleteQuestion
 }

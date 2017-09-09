@@ -5,16 +5,16 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
   username: {
     type: String,
-    required: true
+    required: [ true, 'Tidak boleh kosong']
   },
   password: {
     type: String,
-    required: true
+    required: [ true, 'Password tidak boleh kosong']
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: [ true, 'Tidak boleh kosong']
   },
   salt: {
     type: String,

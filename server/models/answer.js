@@ -5,12 +5,12 @@ var Schema = mongoose.Schema;
 var answerSchema = new Schema({
   answer:{
     type: String,
-    require: true
+    require: [true, 'Tidak boleh kosong']
   },
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: [true, 'Tidak boleh kosong']
   },
   time: {
     type: Date,
@@ -26,5 +26,6 @@ var answerSchema = new Schema({
   }]
 })
 
-
+// kenapa tidak didaftarin? 
+// karena dia bagian dari question.makanya scemanya saja
 module.exports = answerSchema;

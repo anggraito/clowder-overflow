@@ -6,16 +6,16 @@ var Schema = mongoose.Schema;
 var questionSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: [true, 'Tidak boleh kosong']
   },
   question: {
     type: String,
-    required: true
+    required: [true, 'Tidak boleh kosong']
   },
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: [true, 'Tidak boleh kosong']
   },
   time: {
     type: Date,

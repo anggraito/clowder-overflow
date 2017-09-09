@@ -1,15 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-const modelQuest = require('../controllers/question');
+const controllQuest = require('../controllers/question');
+const controllAnswer = require('../controllers/answer');
 
-router.get('/', modelQuest.findAllQuestion)
-router.post('/', modelQuest.createQuestion)
-router.get('/:id', modelQuest.getIdQuestion)
-router.put('/:id', modelQuest.updateQuestion)
-router.delete('/:id', modelQuest.deleteQuestion)
+router.get('/', controllQuest.findAllQuestion)
+router.post('/', controllQuest.createQuestion) //auth user
+router.get('/:id', controllQuest.getIdQuestion)
+router.put('/:id', controllQuest.updateQuestion) //auth
+router.delete('/:id', controllQuest.deleteQuestion)
 
-router.get('/:id/answers', modelQuest.findAnswer)
-router.post('/:id/answers', modelQuest.createAnswer)
+router.get('/:id/answers', controllAnswer.findAllAnswer)
+router.get('/:id/answers/:answerid', controllAnswer.findAnswer) //auth user
+router.post('/:id/reply', controllAnswer.createAnswer)
+router.delete('/:id/answer/:answerid', controllAnswer.deleteAnswer)
 
 module.exports = router;
