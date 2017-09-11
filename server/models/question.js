@@ -21,7 +21,7 @@ var questionSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  answer: [answerSchema],
+  answers: [answerSchema],
   voteup: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
