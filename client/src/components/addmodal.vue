@@ -1,5 +1,4 @@
 <template>
-
   <div class="modal fade" id="addModal" role="dialog">
     <div class="modal-dialog">
       <!-- Modal content-->
@@ -13,11 +12,11 @@
             <p> user </p>
             <div class="form-group">
               <label for="title">Title of Topic</label>
-              <input type="text" class="form-control" id="title" name="title" placeholder="Room name">
+              <input type="text" class="form-control" id="title" name="title" placeholder="-Create Topic-">
             </div>
             <div class="form-group">
-              <label for="quest">Topic</label>
-              <input type="text" class="form-control" id="quest" name="quest" placeholder="How many player">
+              <label for="question">Topic</label>
+              <input type="text" class="form-control" id="question" name="question" placeholder="-Type topic descriptions-">
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
           </form>

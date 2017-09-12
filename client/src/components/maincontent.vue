@@ -1,23 +1,15 @@
 <template>
   <div class="maincontent">
-    <div class="list-item">
+    <div class="list-item" v-for="question in allQuestions">
       <div class="box-top">
-        <h4>Topic : there is title topic declare</h4>
-        <p>Lorem Ipsum is that it has a more-or-less normal 
-        distribution of letters, as opposed to using 'Content 
-        here, content here', making it look like readable 
-        English. Many desktop publishing packages and web page 
-        editors now use Lorem Ipsum as their default model text, 
-        and a search for 'lorem ipsum' will uncover many web 
-        sites still in their infancy. Various versions have 
-        evolved over the years, sometimes by accident, sometimes 
-        on purpose (injected humour and the like).
-        </p>
+        <h4>Topic : {{question.title}}</h4>
+        <p>{{question.question}}</p>
+        <p class="right"><strong>Post on:</strong> {{question.time}}</p>
       </div>
       <div class="box-detail">
         <div class="clearfix box-setting">
           <ul class="left col-md-6">
-            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Author name</li>
+            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{question.author.username}}</li>
           </ul>
           <ul class="right col-md-6">
             <li><span class="glyphicon vote glyphicon-thumbs-up" aria-hidden="true"></span></li>
@@ -30,8 +22,8 @@
         <textarea class="form-control"></textarea>
         <button class="btn btn-small">Respon</button>
         <a class="link-answer" type="button" 
-        v-on:click="seen = !seen">Show All Answer</a>
-        <answerlist v-if="!seen"/>
+         @click.prevent="getAnswers(question._id)">Show This Answer</a>
+        <answerlist v-if="!seen">{{question.answers}}</answerlist>
       </div>
     </div>
   </div>
@@ -39,6 +31,7 @@
 
 <script>
 import answerlist from '@/components/answerlist'
+// import {mapActions} from 'vuex'
 export default {
   name: 'maincontent',
   components: {
@@ -48,6 +41,20 @@ export default {
     return {
       seen: true
     }
+  },
+  methods: {
+    getAnswers (id) {
+      this.seen = false
+      this.$store.dispatch('getAnswers', id)
+    }
+  },
+  computed: {
+    allQuestions () {
+      return this.$store.state.allQuestions
+    }
+  },
+  created () {
+    this.$store.dispatch('getAllQuestions')
   }
 }
 </script>

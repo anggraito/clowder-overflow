@@ -15,8 +15,8 @@
         <!-- nav links-->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Link</a></li>
+            <li><a href="#">Home <span class="sr-only">(current)</span></a></li>
+            <li><a href="/dashboard">Forum</a></li>
           </ul>
         </div>
       </div>

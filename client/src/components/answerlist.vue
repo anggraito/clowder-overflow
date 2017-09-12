@@ -1,21 +1,26 @@
 <template>
-  <div class="box-answer">
-    <p><span class="rmv glyphicon glyphicon-remove" aria-hidden="true"></span></p>
-    <p><span class="glyphicon responder-name glyphicon-user" aria-hidden="true"> Responder Name: </span>
-    Many desktop publishing packages and web page editors now use Lorem Ipsum as their 
-    default model text Many desktop publishing packages and web page editors now use L
-    orem Ipsum as their default model text</p>
-    <ul class="vote-answer">
-      <li><span class="glyphicon vote glyphicon-thumbs-up" aria-hidden="true"></span></li>
-      <li><span class="glyphicon vote glyphicon-thumbs-down" aria-hidden="true"></span></li>
-      <li></li>
-    </ul>
+  <div>
+    <div class="box-answer" v-for="answer in Answers">
+      <p><span class="rmv glyphicon glyphicon-remove" aria-hidden="true"></span></p>
+      <p><span class="glyphicon responder-name glyphicon-user" aria-hidden="true"> {{answer.author.username}}: </span>
+      {{answer.answer}}</p>
+      <ul class="vote-answer">
+        <li><span class="glyphicon vote glyphicon-thumbs-up" aria-hidden="true"></span></li>
+        <li><span class="glyphicon vote glyphicon-thumbs-down" aria-hidden="true"></span></li>
+        <li> {{answer.time}} </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+// import {ma pActions} from 'vuex'
 export default {
-  name: 'box-answer'
+  computed: {
+    Answers () {
+      return this.$store.state.oneAnswer
+    }
+  }
 }
 </script>
 

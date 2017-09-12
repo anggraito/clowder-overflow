@@ -6,7 +6,7 @@ var findAllQuestion = (req, res) => {
     path: 'author',
     select: 'username'
   })
-  .populate('answer.author')
+  .populate('answers.author')
   .then((questions) => {
     res.send(questions)
   })

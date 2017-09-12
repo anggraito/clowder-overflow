@@ -3,6 +3,11 @@ const db = require('../models/question')
 
 var findAnswer = (req, res) => {
   db.findById(req.params.id)
+  // .populate({
+  //   path: 'author',
+  //   select: 'username'
+  // })
+  .populate('answers.author')
   .then((data) => {
     res.send(data.answers)
   })
