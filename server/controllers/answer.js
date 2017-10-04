@@ -1,27 +1,10 @@
-const db = require('../models/question')
-
-
-var findAnswer = (req, res) => {
-  db.findById(req.params.id)
-  // .populate({
-  //   path: 'author',
-  //   select: 'username'
-  // })
-  .populate('answers.author')
-  .then((data) => {
-    res.send(data.answers)
-  })
-  .catch(err => {
-    res.status(500).send(err)
-  })
-}
+const Question = require('../models/Question')
 
 var createAnswer = (req, res) => {
-  db.findByIdAndUpdate(req.params.id, {
+  Question.findByIdAndUpdate(req.params.id, {
     $push: {'answers': {
       answer: req.body.answer,
-      author: req.body.author,
-      time: new Date()
+      author: req.body.author
     }}
   },{
     safe: true,
@@ -36,10 +19,25 @@ var createAnswer = (req, res) => {
   })
 }
 
+var findAnswer = (req, res) => {
+  Question.findById(req.params.id)
+  // .populate({
+  //   path: 'author',
+  //   select: 'username'
+  // })
+  .populate('answers.author')
+  .then((data) => {
+    res.send(data.answers)
+  })
+  .catch(err => {
+    res.status(500).send(err)
+  })
+}
+
 var deleteAnswer = (req, res) => {
-  db.findByIdAndRemove({_id:req.params.id})
+  Question.findByIdAndRemove({_id:req.params.id})
   .then((answer) => {
-    db.findById(req.params.id, (err, data) => {
+    Question.findById(req.params.id, (err, data) => {
       let idAnswer = answer.replies.indexOf(answer._id)
       data.replies.splice(idx, 1)
       data.save((err, updateQuestion) => {
@@ -53,7 +51,7 @@ var deleteAnswer = (req, res) => {
 }
 
 var voteUp = (req, res) => {
-  db.findById({_id:req.params.answerid})
+  Question.findById({_id:req.params.answerid})
   .then((quest) => {
     if(req.body.author){ //karena kalo dia bukan user, masa bisa like?
       var addVote = quest.voteup.indexOf(req.body.author)
@@ -79,7 +77,7 @@ var voteUp = (req, res) => {
 }
 
 var voteBoo = (req, res) => {
-  db.findById({_id:req.params.answerid})
+  Question.findById({_id:req.params.answerid})
   .then((quest) => {
     if(req.body.author){
       var addVote = quest.voteup.indexOf(req.body.author)

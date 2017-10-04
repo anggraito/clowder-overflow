@@ -1,20 +1,15 @@
 const mongoose = require('mongoose')
-
 var Schema = mongoose.Schema;
 
 var answerSchema = new Schema({
   answer:{
     type: String,
-    require: [true, 'Tidak boleh kosong']
+    require: true
   },
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: [true, 'Tidak boleh kosong']
-  },
-  time: {
-    type: Date,
-    default: Date.now
+    required: true
   },
   voteup: [{
     type: Schema.Types.ObjectId,
@@ -24,6 +19,8 @@ var answerSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   }]
+},{
+  timestamps: true
 })
 
 // kenapa tidak didaftarin? 

@@ -5,21 +5,19 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
   username: {
     type: String,
-    required: [ true, 'Tidak boleh kosong']
+    required: true
   },
   password: {
     type: String,
-    required: [ true, 'Password tidak boleh kosong']
+    required: true
   },
   email: {
     type: String,
     required: true,
-    unique: [ true, 'Tidak boleh kosong']
-  },
-  salt: {
-    type: String,
-    required: true
+    unique: true,
   }
+},{
+  timestamps: true
 })
 // compiling model from schema
 var user = mongoose.model('User', userSchema);

@@ -1,12 +1,27 @@
-const db = require('../models/question')
+const Question = require('../models/Question')
+
+var createQuestion = (req, res) => {
+  Question.create({
+    title: req.body.title,
+    question: req.body.quest,
+    author: req.id,
+    answers: [],
+    voteup: [],
+    voteboo: []
+  })
+  .then(data => {
+    res.json({
+      message: `Thread " ${data.title} " berhasil dibuat`,
+      data: data
+    })
+  })
+  .catch(error => {
+    res.send(error)
+  })
+}
 
 var findAllQuestion = (req, res) => {
-  db.find()
-  .populate({
-    path: 'author',
-    select: 'username'
-  })
-  .populate('answers.author')
+  Question.find()
   .then((questions) => {
     res.send(questions)
   })
@@ -15,30 +30,12 @@ var findAllQuestion = (req, res) => {
   })
 }
 
-var createQuestion = (req, res) => {
-  db.create({
-    title: req.body.title,
-    question: req.body.quest,
-    author: req.body.author,
-    time: new Date(),
-    answers: [],
-    voteup: [],
-    voteboo: []
-  })
-  .then(data => {
-    res.send(`Thread " ${data.title} " berhasil dibuat`)
-  })
-  .catch(error => {
-    res.send(error)
-  })
-}
-
 var getIdQuestion = (req, res) => {
-  db.findOne({_id: req.params.id})
-  .populate('author')
-  .populate('answer.author')
-  .populate('answer.voteup')
-  .populate('answer.voteboo')
+  Question.findOne({_id: req.params.id})
+  // .populate('author')
+  // .populate('answer.author')
+  // .populate('answer.voteup')
+  // .populate('answer.voteboo')
   .then((question) => {
     res.send(question)
   })
@@ -48,17 +45,19 @@ var getIdQuestion = (req, res) => {
 }
 
 var updateQuestion = (req, res) => {
-  db.findById({_id: req.params.id}) //bisa juga pake where
+  Question.findById({_id: req.params.id}) //bisa juga pake where
   .then((quest) => {
     quest.title = req.body.title || quest.title
     quest.question = req.body.question || quest.question
-    quest.time = new Date()
 
     quest.save((err, data) => { //disini .update({<field>})
       if(err) {
         res.status(500).send(err)
       }
-      res.send(`Update " ${data.title} " berhasil`)
+      res.send({
+        message: `Update " ${data.title} " berhasil`,
+        data: data
+      })
     })
   })
   .catch(err => {
@@ -67,9 +66,11 @@ var updateQuestion = (req, res) => {
 }
 
 var deleteQuestion = (req, res) => {
-  db.findByIdAndRemove(req.params.id)
+  Question.findByIdAndRemove(req.params.id)
   .then(() => {
-    res.send('Success delete data')
+    res.send({
+      message: 'Success delete data'
+    })
   })
   .catch(err => {
     res.status(500).send(err)
@@ -77,7 +78,7 @@ var deleteQuestion = (req, res) => {
 }
 
 var voteUp = (req, res) => {
-  db.findById(req.params.id)
+  Question.finQuestionyId(req.params.id)
   .then((quest) => {
     if(req.body.author){ //karena kalo dia bukan user, masa bisa like?
       var addVote = quest.voteup.indexOf(req.body.author)
@@ -103,7 +104,7 @@ var voteUp = (req, res) => {
 }
 
 var voteBoo = (req, res) => {
-  db.findById(req.params.id)
+  Question.finQuestionyId(req.params.id)
   .then((quest) => {
     if(req.body.author){
       var addVote = quest.voteup.indexOf(req.body.author)

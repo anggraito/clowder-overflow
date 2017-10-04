@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
-
-// import controllers yang dipakai
-const modelUser = require('../controllers/user');
+const controllerUser = require('../controllers/user');
+const authorize = require('../helpers/auth')
 
 // metode bisa get,post,put,delete jika database mongoose
-router.get('/users', modelUser.findAllUser)
-router.post('/signup', modelUser.createUser) //register
-router.post('/signin', modelUser.loginUser)
-router.delete('/users/:id', modelUser.deleteUser)
+router.post('/signup', controllerUser.createUser) //register
+router.post('/signin', controllerUser.loginUser)
+router.get('/users', authorize.isLogin, controllerUser.findAllUser) //this admin
+router.get('/users/:name', authorize.isLogin, controllerUser.getUser) 
+router.put('/users/:id', authorize.isLogin, authorize.thisUser, controllerUser.updateUser) //thisuser
+router.delete('/users/:id', authorize.isLogin, authorize.thisUser, controllerUser.deleteUser) //thisuser
 
 module.exports = router;

@@ -1,14 +1,53 @@
-// import model yang digunakan untuk ambil database
-const db = require('../models/user');
+const User = require('../models/User');
+const Question = require('../models/Question');
 const jwt = require('jsonwebtoken')
-const secret = require('../helpers/salt')
+var bcrypt = require('bcryptjs')
+var salt = bcrypt.genSaltSync(10);
 require('dotenv').config()
-// method-method mongoose untuk crud find() , 
-// create(), findById() then save(), 
-// findByIdAndRemove()
+
+var createUser = (req, res) => {
+  var passwordSalt = bcrypt.hashSync(req.body.password, salt)
+  User.create({
+    username: req.body.username,
+    password: passwordSalt,
+    email: req.body.email
+  })
+  .then((user) => {
+    res.send({
+      message: "Sugeng Rawuh",
+      user: user
+    })
+  })
+  .catch(error => { res.send(error) })
+}
+
+var loginUser = (req, res) => {
+  User.findOne({ username: req.body.username})
+  .then(user => {
+    let decodePassword = bcrypt.compareSync(req.body.password, user.password);
+    if(decodePassword){
+      var token = jwt.sign({
+        id: user._id,
+        username: user.username,
+        email: user.email
+      }, process.env.SECRET_KEY)
+      res.send(token)
+    } else{
+      res.send({
+        message: 'Mboten saget mriki, kuncine mboten ceples'
+      })
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: 'Asmanipun sinten nggih?',
+      err: err
+    })
+  })
+}
 
 var findAllUser = (req, res) => {
-  db.find()
+  User.find()
   .then((users) => {
     res.send(users)
   })
@@ -17,62 +56,62 @@ var findAllUser = (req, res) => {
   })
 }
 
-var createUser = (req, res) => {
-  let randomSalt = secret.random(8);
-  let passwordSalt = secret.createSalt(req.body.password, randomSalt)
-  db.create({
-    username: req.body.username,
-    password: passwordSalt,
-    email: req.body.email,
-    salt: randomSalt
+var getUser = (req, res) => {
+  User.findOne({username: req.params.username})
+  .then(user => {
+    res.send(user)
   })
-  .then((user) => {
-    res.send(`Berhasil`)
-  })
-  .catch(error => {
-    res.send(error)
+  .catch(err => {
+    res.send({
+      message: "Mboten wonten",
+      err: err
+    })
   })
 }
 
-var loginUser = (req, res) => {
-  db.findOne({ username: req.body.username})
-  .then(response =>{
-    let randomSalt = secret.random(8);
-    let passwordSalt = secret.createSalt(req.body.password, randomSalt)
-    if(req.body.password == passwordSalt){
-      let token = jwt.sign({
-        username: response.username,
-        email: response.email
+var updateUser = (req, res) => {
+  User.findById(req.params.id)
+  .then(user => {
+    let decodePassword = bcrypt.compareSync(req.body.password, user.password);
+    if(decodePassword){
+      var passwordSalt = bcrypt.hashSync(req.body.password, salt)
+      user.username = req.body.username || user.username
+      user.password = passwordSalt || user.password
+      user.email = req.body.email || user.email
+    
+      user.save((err, result) => {
+        if(err) {
+          res.status(500).send(err)
+        }
+        res.send({
+          message: "Enggal njihh",
+          result: result
+        })
       })
-      let mixObject = {
-        token: token,
-        id: response._id,
-        username: response.username
-      }
-      res.send(mixObject)
     } else{
-      res.send('incorrect password!')
+      res.send({
+        message: 'Badalah, monggo dipuncobi malih'
+      })
     }
   })
   .catch(err => {
     res.status(500).send(err)
-  })
+  }) 
 }
 
 var deleteUser = (req, res) => {
-  db.findByIdAndRemove(req.params.id)
+  User.findIdAndRemove(req.params.id)
   .then(()=>{
-    res.send('sukses delete')
+    //Question.delete here
+    res.send('Sampun tedupak')
   })
   .catch(err =>{
     res.send(err)
   })
 }
 
-
-
-
 // export method yang akan digunakan
 module.exports = {
-  findAllUser, createUser, loginUser, deleteUser
+  createUser, loginUser, findAllUser, 
+  getUser, updateUser, deleteUser
 }
