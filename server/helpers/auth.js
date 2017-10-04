@@ -26,9 +26,22 @@ var thisUser = (req, res, next) => {
     next()
   } else{
     res.send({
-      message: 'Mboten pareng ningali tiyang liyane'
+      message: 'Mboten wonten tiyang meniko'
     })
   }
+}
+
+var userAuth = (req, res, next) => {
+  jwt.verify(req.headers.token, process.env.SECRET_KEY, (err, decoded) => {
+    if(!err){
+      req.author = decoded.id
+      next()
+    } else{
+      res.send({
+        message: 'Mboten pareng ngrusuhi tiyang liyane'
+      })
+    }
+  })
 }
 
 var thisAdmin = (req, res, next) => {
@@ -38,11 +51,11 @@ var thisAdmin = (req, res, next) => {
     next()
   } else{
     res.send({
-      message: 'Ngamunten, menawi dede admin'
+      message: 'Ngapunten, menawi dede admin'
     })
   }
 }
 
 module.exports = {
-  isLogin, thisUser, thisAdmin
+  isLogin, thisUser, thisAdmin, userAuth
 }

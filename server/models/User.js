@@ -20,6 +20,6 @@ var userSchema = new Schema({
   timestamps: true
 })
 // compiling model from schema
-var user = mongoose.model('User', userSchema);
+var User = mongoose.model('User', userSchema);
 
-module.exports = user
+module.exports = User

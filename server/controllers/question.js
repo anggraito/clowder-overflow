@@ -22,6 +22,10 @@ var createQuestion = (req, res) => {
 
 var findAllQuestion = (req, res) => {
   Question.find()
+  .populate({
+    path: 'author',
+    select: 'username'
+  })
   .then((questions) => {
     res.send(questions)
   })
@@ -32,10 +36,6 @@ var findAllQuestion = (req, res) => {
 
 var getIdQuestion = (req, res) => {
   Question.findOne({_id: req.params.id})
-  // .populate('author')
-  // .populate('answer.author')
-  // .populate('answer.voteup')
-  // .populate('answer.voteboo')
   .then((question) => {
     res.send(question)
   })
@@ -45,20 +45,29 @@ var getIdQuestion = (req, res) => {
 }
 
 var updateQuestion = (req, res) => {
-  Question.findById({_id: req.params.id}) //bisa juga pake where
+  Question.findById(req.params.id) //bisa juga pake where
   .then((quest) => {
-    quest.title = req.body.title || quest.title
-    quest.question = req.body.question || quest.question
-
-    quest.save((err, data) => { //disini .update({<field>})
-      if(err) {
-        res.status(500).send(err)
-      }
-      res.send({
-        message: `Update " ${data.title} " berhasil`,
-        data: data
+    console.log('ini quest author', quest.author)
+    console.log('ini quest id jwt', req.id)
+    console.log('ini author', req.author)
+    if(quest.author == req.author){
+      quest.title = req.body.title || quest.title
+      quest.question = req.body.question || quest.question
+  
+      quest.save((err, data) => { //disini .update({<field>})
+        if(err) {
+          res.status(500).send(err)
+        }
+        res.send({
+          message: `Update " ${data.title} " berhasil`,
+          data: data
+        })
       })
-    })
+    } else{
+      res.send({
+        message: 'Update tidak terorganisir'
+      })
+    }
   })
   .catch(err => {
     res.status(500).send(err)
@@ -67,10 +76,16 @@ var updateQuestion = (req, res) => {
 
 var deleteQuestion = (req, res) => {
   Question.findByIdAndRemove(req.params.id)
-  .then(() => {
-    res.send({
-      message: 'Success delete data'
-    })
+  .then(user => {
+    if(user.author == req.author){
+      res.send({
+        message: 'Success delete data'
+      })
+    } else{
+      res.send({
+        message: 'Update tidak terorganisir'
+      })
+    }
   })
   .catch(err => {
     res.status(500).send(err)

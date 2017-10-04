@@ -7,8 +7,8 @@ const authorize = require('../helpers/auth')
 router.get('/', controllQuest.findAllQuestion)
 router.post('/', authorize.isLogin, controllQuest.createQuestion) //auth user
 router.get('/:id', authorize.isLogin, controllQuest.getIdQuestion) //sama dengan get id answer
-router.put('/user/:id', authorize.isLogin, authorize.thisUser, controllQuest.updateQuestion) //auth
-router.delete('/:id', authorize.isLogin, authorize.thisUser, controllQuest.deleteQuestion)
+router.put('/:id', authorize.isLogin, authorize.userAuth, controllQuest.updateQuestion) //auth
+router.delete('/:id', authorize.isLogin, authorize.userAuth, controllQuest.deleteQuestion)
 
 router.get('/:id/answers', controllAnswer.findAnswer) //auth user
 router.post('/:id/reply', authorize.isLogin, controllAnswer.createAnswer)

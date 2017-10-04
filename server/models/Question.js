@@ -12,7 +12,10 @@ var questionSchema = new Schema({
     type: String,
     required: true
   },
-  author: String,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   answers: [answerSchema],
   voteup: [{
     type: Schema.Types.ObjectId,
@@ -26,6 +29,6 @@ var questionSchema = new Schema({
   timestamps: true
 })
 // compiling model from schema
-var question = mongoose.model('Question', questionSchema);
+var Question = mongoose.model('Question', questionSchema);
 
-module.exports = question;
+module.exports = Question;
