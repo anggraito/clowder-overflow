@@ -4,15 +4,18 @@ var createAnswer = (req, res) => {
   Question.findByIdAndUpdate(req.params.id, {
     $push: {'answers': {
       answer: req.body.answer,
-      author: req.body.author
+      author: req.id
     }}
   },{
     safe: true,
     upsert: true,
     new: true
   })
-  .then((data) => {
-    res.send(data)
+  .then(data => {
+    res.send({
+      message: 'Sampun dados answernipun',
+      data: data
+    })
   })
   .catch(err => {
     res.send(err)
@@ -21,12 +24,8 @@ var createAnswer = (req, res) => {
 
 var findAnswer = (req, res) => {
   Question.findById(req.params.id)
-  // .populate({
-  //   path: 'author',
-  //   select: 'username'
-  // })
   .populate('answers.author')
-  .then((data) => {
+  .then(data => {
     res.send(data.answers)
   })
   .catch(err => {
@@ -35,19 +34,26 @@ var findAnswer = (req, res) => {
 }
 
 var deleteAnswer = (req, res) => {
-  Question.findByIdAndRemove({_id:req.params.id})
-  .then((answer) => {
-    Question.findById(req.params.id, (err, data) => {
-      let idAnswer = answer.replies.indexOf(answer._id)
-      data.replies.splice(idx, 1)
-      data.save((err, updateQuestion) => {
-        res.send(err ? err : answer)
-      })
-    })
+  // Question.findByIdAndRemove({_id:req.params.id})
+  // .then((answer) => {
+  //   Question.findById(req.params.id, (err, data) => {
+  //     let idAnswer = answer.replies.indexOf(answer._id)
+  //     data.replies.splice(idx, 1)
+  //     data.save((err, updateQuestion) => {
+  //       res.send(err ? err : answer)
+  //     })
+  //   })
+  // })
+  // .catch(err => {
+  //   res.send(err)
+  // })
+  Question.findByIdAndRemove({_id: req.params.id})
+  .then(() => {
+
   })
-  .catch(err => {
-    res.send(err)
-  })
+  .catch(err => res.send(err))
+
+  
 }
 
 var voteUp = (req, res) => {

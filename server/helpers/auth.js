@@ -21,7 +21,6 @@ var isLogin = (req,res, next) => {
 
 var thisUser = (req, res, next) => {
   console.log("ini req params", req.params.id)
-  console.log("ini req id", req.id)
   if(req.id == req.params.id){
     next()
   } else{
@@ -35,6 +34,7 @@ var userAuth = (req, res, next) => {
   jwt.verify(req.headers.token, process.env.SECRET_KEY, (err, decoded) => {
     if(!err){
       req.author = decoded.id
+      console.log('ini req author', req.author)
       next()
     } else{
       res.send({

@@ -11,7 +11,7 @@ var createQuestion = (req, res) => {
   })
   .then(data => {
     res.json({
-      message: `Thread " ${data.title} " berhasil dibuat`,
+      message: `Topik " ${data.title} " pun didamel`,
       data: data
     })
   })
@@ -36,6 +36,10 @@ var findAllQuestion = (req, res) => {
 
 var getIdQuestion = (req, res) => {
   Question.findOne({_id: req.params.id})
+  .populate({
+    path: 'author',
+    select: 'username'
+  })
   .then((question) => {
     res.send(question)
   })
@@ -59,13 +63,13 @@ var updateQuestion = (req, res) => {
           res.status(500).send(err)
         }
         res.send({
-          message: `Update " ${data.title} " berhasil`,
+          message: `" ${data.title} " sampun di damel malih`,
           data: data
         })
       })
     } else{
       res.send({
-        message: 'Update tidak terorganisir'
+        message: 'Mboten saged ndameli tiyang liyane'
       })
     }
   })
@@ -75,11 +79,21 @@ var updateQuestion = (req, res) => {
 }
 
 var deleteQuestion = (req, res) => {
-  Question.findByIdAndRemove(req.params.id)
+  Question.findById(req.params.id)
   .then(user => {
     if(user.author == req.author){
-      res.send({
-        message: 'Success delete data'
+      console.log('ini user author', user.author)
+      console.log('ini req author', req.author)
+      Question.remove({
+        _id: req.params.id
+      })
+      .then(()=>{
+        res.send({
+          message: 'Pun di dupak'
+        })
+      })
+      .catch(err => {
+        res.status(500).send(err)
       })
     } else{
       res.send({
@@ -93,13 +107,13 @@ var deleteQuestion = (req, res) => {
 }
 
 var voteUp = (req, res) => {
-  Question.finQuestionyId(req.params.id)
+  Question.findById(req.params.id)
   .then((quest) => {
-    if(req.body.author){ //karena kalo dia bukan user, masa bisa like?
-      var addVote = quest.voteup.indexOf(req.body.author)
-      var removeVote = quest.votedown.indexOf(req.body.author)
+    if(req.author){ //karena kalo dia bukan user, masa bisa like?
+      var addVote = quest.voteup.indexOf(req.author)
+      var removeVote = quest.votedown.indexOf(req.author)
       if(addVote == -1 && removeVote == -1){
-        quest.voteup.push(req.body.author)
+        quest.voteup.push(req.author)
       } else if(removeVote !== -1){
         quest.votedown.splice(removeVote, 1)
       }
@@ -119,7 +133,7 @@ var voteUp = (req, res) => {
 }
 
 var voteBoo = (req, res) => {
-  Question.finQuestionyId(req.params.id)
+  Question.findById(req.params.id)
   .then((quest) => {
     if(req.body.author){
       var addVote = quest.voteup.indexOf(req.body.author)

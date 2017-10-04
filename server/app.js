@@ -15,8 +15,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // connect database
-// var url = 'mongodb://localhost/clowder-overflow2';
-var url = 'mongodb://anggraito:anggi123@cluster0-shard-00-00-vv98n.mongodb.net:27017,cluster0-shard-00-01-vv98n.mongodb.net:27017,cluster0-shard-00-02-vv98n.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin'
+var url = 'mongodb://localhost/clowder-overflow2';
+// var url = 'mongodb://anggraito:anggi123@cluster0-shard-00-00-vv98n.mongodb.net:27017,cluster0-shard-00-01-vv98n.mongodb.net:27017,cluster0-shard-00-02-vv98n.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin'
 mongoose.connect(url);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

@@ -10,7 +10,7 @@ router.get('/:id', authorize.isLogin, controllQuest.getIdQuestion) //sama dengan
 router.put('/:id', authorize.isLogin, authorize.userAuth, controllQuest.updateQuestion) //auth
 router.delete('/:id', authorize.isLogin, authorize.userAuth, controllQuest.deleteQuestion)
 
-router.get('/:id/answers', controllAnswer.findAnswer) //auth user
+router.get('/:id/answers', authorize.isLogin, controllAnswer.findAnswer) //auth user
 router.post('/:id/reply', authorize.isLogin, controllAnswer.createAnswer)
 router.delete('/:id/answer/:answerid', authorize.isLogin, authorize.thisUser, controllAnswer.deleteAnswer)
 

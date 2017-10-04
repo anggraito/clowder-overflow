@@ -8,8 +8,7 @@ var answerSchema = new Schema({
   },
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   },
   voteup: [{
     type: Schema.Types.ObjectId,
