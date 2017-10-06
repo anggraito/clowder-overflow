@@ -232,58 +232,6 @@ var thumbsDown = (req, res) => {
   .catch(err => res.send(err))
 }
 
-// var voteUp = (req, res) => {
-//   Question.findById(req.params.id)
-//   .then((quest) => {
-//     if(req.author){ //karena kalo dia bukan user, masa bisa like?
-//       var addVote = quest.voteup.indexOf(req.author)
-//       var removeVote = quest.votedown.indexOf(req.author)
-//       if(addVote == -1 && removeVote == -1){
-//         quest.voteup.push(req.author)
-//       } else if(removeVote !== -1){
-//         quest.votedown.splice(removeVote, 1)
-//       }
-//       quest.save((err, dataUp) => {
-//         if(err) {
-//           res.status(500).send(err)
-//         }
-//         res.send(dataUp)
-//       })
-//     } else {
-//       res.send('Silahkan login dahulu')
-//     }
-//   })
-//   .catch(err => {
-//     res.status(500).send(err)
-//   })
-// }
-
-// var voteBoo = (req, res) => {
-//   Question.findById(req.params.id)
-//   .then((quest) => {
-//     if(req.body.author){
-//       var addVote = quest.voteup.indexOf(req.body.author)
-//       var removeVote = quest.voteboo.indexOf(req.body.author)
-//       if(addVote == -1 && removeVote == -1){
-//         quest.voteboo.push(req.body.author)
-//       } else if(addVote == -1){
-//         quest.voteup.splice(removeVote, 1)
-//       }
-//       quest.save((err, dataBoo) => {
-//         if(err){
-//           res.status(500).send(err)
-//         }
-//         res.send(dataBoo)
-//       })
-//     } else{
-//       res.send('Silahkan login terebih dahulu')
-//     }
-//   })
-//   .catch(err => {
-//     res.send(err)
-//   })
-// }
-
 module.exports = {
   findAllQuestion, 
   createQuestion, 
