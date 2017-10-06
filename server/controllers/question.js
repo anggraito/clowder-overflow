@@ -113,12 +113,14 @@ var thumbsUp = (req, res) => {
     voteup: req.id
   })
   .then(up => {
+    console.log('ini up pertama',up)
     if(up == null) {
       Question.findOne({
         _id: req.body.id,
         voteboo: req.id
       })
       .then(down => {
+        console.log('data down', down)
         if(down == null) {
           Question.updateOne({
             _id: req.body.id
@@ -128,6 +130,7 @@ var thumbsUp = (req, res) => {
             }
           })
           .then(result => {
+            console.log('resultnya null voteup', result)
             res.json(result)
           })
           .catch(err => res.send(err))
@@ -154,6 +157,73 @@ var thumbsUp = (req, res) => {
         }
       })
       .then(result => {
+        console.log('resultnya voteup', result)
+        res.json(result)
+      })
+      .catch(err => res.send(err))
+    }
+  })
+  .catch(err => res.send(err))
+}
+
+var thumbsDown = (req, res) => {
+  Question.findOne({
+    _id: req.body.id,
+    voteboo: req.id
+  })
+  .then(down => {
+    if(down == null) {
+      Question.findOne({
+        _id: req.body.id,
+        voteup: req.id
+      })
+      .then(up => {
+        if(up == null){
+          Question.updateOne({
+            _id: req.body.id
+          },{
+            $push: {
+              voteboo: req.id
+            }
+          })
+          .then(result => {
+            res.json(result)
+          })
+          .catch(err => res.send(err))
+        } else{
+          Question.updateOne({
+            _id: req.body.id
+          },{
+            $push: {
+              voteup: req.id
+            }
+          })
+          .then(result => {
+            Question.updateOne({
+              _id : req.body.id
+            }, {
+              $push : {
+                voteboo : req.id
+              }
+            })
+            .then(result=>{
+              res.json(result)
+            })
+            .catch(err => res.send(err))
+          })
+          .catch(err => res.send(err))
+        }
+      })
+      .catch(err => res.send(err))
+    } else{
+      Question.updateOne({
+        _id : req.body.id
+      }, {
+        $pull : {
+          voteboo : req.id
+        }
+      })
+      .then(result=>{
         res.json(result)
       })
       .catch(err => res.send(err))
@@ -220,6 +290,6 @@ module.exports = {
   getIdQuestion, 
   updateQuestion, 
   deleteQuestion,
-  thumbsUp
+  thumbsUp, thumbsDown
   // voteUp, voteBoo
 }
