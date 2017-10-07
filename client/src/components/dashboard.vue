@@ -1,7 +1,8 @@
 <template>
   <div class="dash">
-    <div class="row">
-      <h2>{{title}}, {{user}}</h2>
+    <div class="row header">
+      <h2>Clowder Overflow</h2>
+      <h4>{{title}}, {{user}}</h4>
       <button type="button" class="btn btn-lg" data-toggle="modal" data-target="#addModal">Post New Topic</button>
       <modaladd />
     </div>
@@ -30,7 +31,7 @@ export default {
   },
   data () {
     return {
-      title: 'Welcome to the dashboard',
+      title: 'Ask me anything you want',
       user: 'user'
     }
   }
@@ -39,9 +40,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.header{
+  margin-top: 40px;
+}
 .content-dashboard{
-  margin-top: 20px;
+  margin-top: 50px;
   text-align: left;
   padding: 0 5%;
+}
+h2 {
+  font-weight: normal;
+  font-size: 48px;
+  font-family: 'Cabin Sketch', cursive;
 }
 </style>

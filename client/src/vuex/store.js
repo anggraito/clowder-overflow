@@ -9,22 +9,30 @@ const http = axios.create({
 
 const store = new Vuex.Store({
   state: {
-    allQuestions: '',
+    questions: [],
+    question: {},
     oneAnswer: ''
   },
   mutations: {
     setAllQuestions (state, payload) {
-      state.allQuestions = payload
+      state.questions = payload
     },
     setOneAnswer (state, payload) {
       state.oneAnswer = payload
     }
   },
   actions: {
+    doLOgin ({commit}, auth) {
+      http.post('/signin', {
+        username: auth.username,
+        password: auth.password
+      })
+    },
     getAllQuestions ({commit}) {
       http.get('/questions')
-      .then(response => {
-        commit('setAllQuestions', response.data)
+      .then(({data}) => {
+        console.log('ini respon question', data)
+        commit('setAllQuestions', data)
       })
       .catch(err => console.log(err))
     },

@@ -16,7 +16,7 @@
             </div>
             <div class="form-group">
               <label for="question">Topic</label>
-              <input type="text" class="form-control" id="question" name="question" placeholder="-Type topic descriptions-">
+              <textarea type="text" class="form-control" id="question" name="question" placeholder="-Type topic descriptions-"></textarea>
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
           </form>
@@ -40,5 +40,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+textarea{
+  height: 250px;
+}
 </style>

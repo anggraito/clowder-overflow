@@ -1,10 +1,10 @@
 <template>
   <div class="maincontent">
-    <div class="list-item" v-for="question in allQuestions">
+    <div class="list-item" v-for="question in questions" :key="question._id">
       <div class="box-top">
-        <h4>Topic : {{question.title}}</h4>
+        <h4>Title : {{question.title}}</h4>
         <p>{{question.question}}</p>
-        <p class="right"><strong>Post on:</strong> {{question.time}}</p>
+        <p class="right"><strong>Post on: </strong>{{question.createdAt}}</p>
       </div>
       <div class="box-detail">
         <div class="clearfix box-setting">
@@ -14,16 +14,15 @@
           <ul class="right col-md-6">
             <li><span class="glyphicon vote glyphicon-thumbs-up" aria-hidden="true"></span></li>
             <li><span class="glyphicon vote glyphicon-thumbs-down" aria-hidden="true"></span></li>
-            <li><button class="btn btn-small">delete</button></li>
+            <li><button class="btn btn-small"><i class="fa fa-trash" aria-hidden="true"></i></button></li>
           </ul>
         </div>
       </div>
       <div class="box-bottom">
         <textarea class="form-control"></textarea>
         <button class="btn btn-small">Respon</button>
-        <a class="link-answer" type="button" 
-         @click.prevent="getAnswers(question._id)">Show This Answer</a>
-        <answerlist v-if="!seen">{{question.answers}}</answerlist>
+        <a class="link-answer" type="button">Show This Detail</a>
+        <answerlist ></answerlist>
       </div>
     </div>
   </div>
@@ -31,31 +30,45 @@
 
 <script>
 import answerlist from '@/components/answerlist'
+import { mapActions, mapState } from 'vuex'
 // import {mapActions} from 'vuex'
 export default {
   name: 'maincontent',
   components: {
     answerlist
   },
-  data () {
-    return {
-      seen: true
-    }
+  computed: {
+    ...mapState([
+      'questions'
+    ])
   },
   methods: {
-    getAnswers (id) {
-      this.seen = false
-      this.$store.dispatch('getAnswers', id)
-    }
+    ...mapActions([
+      'getAllQuestions'
+    ])
   },
-  computed: {
-    allQuestions () {
-      return this.$store.state.allQuestions
-    }
-  },
-  created () {
-    this.$store.dispatch('getAllQuestions')
+  mounted () {
+    this.getAllQuestions()
   }
+  // data () {
+  //   return {
+  //     seen: true
+  //   }
+  // },
+  // methods: {
+  //   getAnswers (id) {
+  //     this.seen = false
+  //     this.$store.dispatch('getAnswers', id)
+  //   }
+  // },
+  // computed: {
+  //   allQuestions () {
+  //     return this.$store.state.allQuestions
+  //   }
+  // },
+  // created () {
+  //   this.$store.dispatch('getAllQuestions')
+  // }
 }
 </script>
 
@@ -100,3 +113,12 @@ li{
 }
 
 </style>
+
+
+// <div class="box-bottom">
+//         <textarea class="form-control"></textarea>
+//         <button class="btn btn-small">Respon</button>
+//         <a class="link-answer" type="button" 
+//          @click.prevent="getAnswers(question._id)">Show This Answer</a>
+//         <answerlist >{{question.answers}}</answerlist>
+//       </div>

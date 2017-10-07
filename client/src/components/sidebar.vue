@@ -44,7 +44,6 @@ export default {
   margin-bottom: 5px;
 }
 .button2{
-  background-color: #f39e61;
   padding: 10px 20px;
   width: 100%;
 }
