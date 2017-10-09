@@ -11,13 +11,17 @@
           <form>
             <div class="form-group">
               <label for="username">Username</label>
-              <input type="username" class="form-control" id="username" name="username" placeholder="-Input your username-">
+              <input type="username" class="form-control" 
+              id="username" name="username" placeholder="-Input your username-"
+              v-model="auth.username">
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" id="password" name="password" placeholder="-Input your password-">
+              <input type="password" class="form-control" 
+              id="password" name="password" placeholder="-Input your password-"
+              v-model="auth.password">
             </div>
-            <button type="submit" class="btn btn-default">Login</button>
+            <button type="submit" class="btn btn-default" @click="doLogin(auth)">Login</button>
           </form>
         </div>
       </div>
@@ -26,7 +30,26 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
 export default {
+  data () {
+    return {
+      auth: {
+        username: null,
+        password: null
+      }
+    }
+  },
+  computed: {
+    ...mapState([
+      'login'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'doLogin'
+    ])
+  }
 }
 </script>
 

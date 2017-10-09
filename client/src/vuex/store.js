@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import Router from '../router/index'
 
 Vue.use(Vuex)
 const http = axios.create({
@@ -11,6 +12,7 @@ const store = new Vuex.Store({
   state: {
     questions: [],
     question: {},
+    login: '',
     oneAnswer: ''
   },
   mutations: {
@@ -19,14 +21,25 @@ const store = new Vuex.Store({
     },
     setOneAnswer (state, payload) {
       state.oneAnswer = payload
+    },
+    setLogin (state, payload) {
+      if (payload.data.err) state.login = payload
+      else {
+        localStorage.setItem('accesstoken', payload.data.token)
+        Router.go('/')
+      }
     }
   },
   actions: {
-    doLOgin ({commit}, auth) {
+    doLogin ({commit}, auth) {
       http.post('/signin', {
         username: auth.username,
         password: auth.password
       })
+      .then(response => {
+        commit('setLogin', response)
+      })
+      .catch(err => console.log(err))
     },
     getAllQuestions ({commit}) {
       http.get('/questions')
