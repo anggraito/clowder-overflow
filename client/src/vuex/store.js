@@ -31,6 +31,10 @@ const store = new Vuex.Store({
     },
     setError (state, payload) {
       state.msgError = payload
+    },
+    saveQuest (state, payload) {
+      state.questions.push(payload)
+      Router.push('/questions/' + payload._id)
     }
   },
   actions: {
@@ -67,6 +71,20 @@ const store = new Vuex.Store({
         context.commit('setOneAnswer', response.data)
       })
       .catch(err => console.log(err))
+    },
+    submitQuestion ({commit}, newQuest) {
+      http.post('/questions', {
+        title: newQuest.title,
+        question: newQuest.question
+      }, {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(result => {
+        commit('saveQuestion', result.data)
+      })
+      .catch(err => console.log(err.message))
     }
   }
 })

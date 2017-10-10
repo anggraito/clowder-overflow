@@ -18,7 +18,7 @@
               <label for="question">Topic</label>
               <textarea type="text" class="form-control" id="question" name="question" placeholder="-Type topic descriptions-"></textarea>
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default" @click="addQuestion">Submit</button>
           </form>
         </div>
       </div>
