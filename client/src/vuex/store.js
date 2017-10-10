@@ -12,8 +12,10 @@ const store = new Vuex.Store({
   state: {
     questions: [],
     question: {},
-    login: '',
-    oneAnswer: ''
+    login: false,
+    user: null,
+    msgUpdate: '',
+    msgError: ''
   },
   mutations: {
     setAllQuestions (state, payload) {
@@ -23,21 +25,30 @@ const store = new Vuex.Store({
       state.oneAnswer = payload
     },
     setLogin (state, payload) {
-      if (payload.data.err) state.login = payload
-      else {
-        localStorage.setItem('accesstoken', payload.data.token)
-        Router.go('/')
-      }
+      localStorage.setItem('token', payload)
+      console.log(state.login)
+      Router.go('/')
+    },
+    setError (state, payload) {
+      state.msgError = payload
     }
   },
   actions: {
     doLogin ({commit}, auth) {
       http.post('/signin', {
-        username: auth.username,
-        password: auth.password
+        username: auth.loginUsername,
+        password: auth.loginPass
       })
       .then(response => {
-        commit('setLogin', response)
+        console.log(response.data)
+        if (response.data.message !== 'Mboten saget mriki, kuncine mboten ceples') {
+          localStorage.clear()
+          // localStorage.setItem('token', response.data)
+          console.log()
+          commit('setLogin', response.data)
+        } else {
+          commit('setError', response.data.message)
+        }
       })
       .catch(err => console.log(err))
     },

@@ -1,9 +1,13 @@
 <template>
   <div class="sidebar">
-    <button class="btn btn-lg button1" data-toggle="modal" data-target="#loginUser">Login</button>
-    <button class="btn btn-lg button2" data-toggle="modal" data-target="#registerUser">Register</button>
-    <modallogin />
-    <modalregister />
+    <div v-if="auth == false">
+      <button class="btn btn-lg button1" data-toggle="modal" data-target="#loginUser">Login</button>
+    </div>
+    <div v-else>
+      <p>namanya siapa</p>
+      <button class="btn btn-lg button2" @click="doLogout">Logout</button>
+    </div>
+    <login-form />
     <h3>{{titlesidebar}}</h3>
     <ol>
       <li>Ini title pertama</li>
@@ -19,18 +23,32 @@
 </template>
 
 <script>
-import modallogin from '@/components/login'
-import modalregister from '@/components/register'
+import loginForm from '@/components/login'
 export default {
   name: 'sidebar',
   components: {
-    modallogin,
-    modalregister
+    loginForm
   },
   data () {
     return {
       titlesidebar: '8 Popular Topic'
     }
+  },
+  methods: {
+    checkLogin () {
+      if (localStorage.getItem('token') === null) {
+        this.auth = false
+      } else {
+        this.auth = true
+      }
+    },
+    doLogout () {
+      localStorage.clear()
+      this.auth = false
+    }
+  },
+  created () {
+    this.checkLogin()
   }
 }
 </script>

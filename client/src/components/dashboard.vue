@@ -2,8 +2,11 @@
   <div class="dash">
     <div class="row header">
       <h2>Clowder Overflow</h2>
-      <h4>{{title}}, {{user}}</h4>
-      <button type="button" class="btn btn-lg" data-toggle="modal" data-target="#addModal">Post New Topic</button>
+      <h4>Ask me anything you want, user</h4>
+      <div v-if="auth === false"></div>
+      <div v-else>
+        <button type="button" class="btn btn-lg" data-toggle="modal" data-target="#addModal">Post New Topic</button>
+      </div>
       <modaladd />
     </div>
     
@@ -22,6 +25,7 @@
 import modaladd from '@/components/addmodal'
 import sidebar from '@/components/sidebar'
 import maincontent from '@/components/maincontent'
+import { mapState } from 'vuex'
 export default {
   name: 'dash',
   components: {
@@ -29,11 +33,22 @@ export default {
     sidebar,
     maincontent
   },
-  data () {
-    return {
-      title: 'Ask me anything you want',
-      user: 'user'
+  computed: {
+    ...mapState([
+      'login'
+    ])
+  },
+  methods: {
+    checkLogin () {
+      if (localStorage.getItem('token') === null) {
+        this.auth = false
+      } else {
+        this.auth = true
+      }
     }
+  },
+  created () {
+    this.checkLogin()
   }
 }
 </script>
