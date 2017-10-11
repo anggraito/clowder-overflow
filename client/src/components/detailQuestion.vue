@@ -1,9 +1,13 @@
 <template>
-  <div class="maincontent">
-    <div class="list-item" v-for="question in questions" :key="question._id">
+  <div>
+    <div v-if="auth === false">
+      <h2>You should Login first</h2>
+      <router-link :to="'/'">Login</router-link>
+    </div>
+    <div class="col-md-8 col-md-offset-2" v-else>
       <div class="box-top">
         <h4>Title : {{question.title}}</h4>
-        <!-- <p>{{question.question}}</p> -->
+        <p>{{question.question}}</p>
         <p class="right"><strong>Post on: </strong>{{question.createdAt}}</p>
       </div>
       <div class="box-detail">
@@ -19,56 +23,68 @@
         </div>
       </div>
       <div class="box-bottom">
-        <!-- <textarea class="form-control"></textarea>
-        <button class="btn btn-small">Respon</button> -->
-        <router-link :to="'questions/' + question._id" class="link-answer" type="button">Show This Detail</router-link>
+        <textarea v-model="newAnswer" class="form-control"></textarea>
+        <button class="btn btn-small" @click.prevent="beforeSubmitAnswer(newAnswer)">Reply</button>
       </div>
+      <answerlist :answers="question.answers"/> 
     </div>
   </div>
 </template>
 
 <script>
+import answerlist from '@/components/answerlist'
 import { mapActions, mapState } from 'vuex'
 export default {
-  name: 'maincontent',
+  components: {
+    answerlist
+  },
+  data () {
+    return {
+      auth: false,
+      newAnswer: ''
+    }
+  },
+  props: ['id'],
   computed: {
     ...mapState([
-      'questions'
+      'question',
+      'answer'
     ])
   },
   methods: {
     ...mapActions([
-      'getAllQuestions'
-    ])
+      'getQuestion',
+      'submitAnswer'
+    ]),
+    checkLogin () {
+      console.log('check login dulu')
+      if (localStorage.getItem('token') === null) {
+        console.log('token nya ga ada')
+        this.auth = false
+      } else {
+        console.log('ada token')
+        this.auth = true
+      }
+    },
+    beforeSubmitAnswer (answer) {
+      if (this.newAnswer === '') {
+        alert('input answer can\'t null')
+      } else {
+        this.submitAnswer(answer)
+        this.newAnswer = ''
+      }
+    }
   },
   mounted () {
-    this.getAllQuestions()
+    this.checkLogin()
+    this.getQuestion(this.id)
   }
-  // data () {
-  //   return {
-  //     seen: true
-  //   }
-  // },
-  // methods: {
-  //   getAnswers (id) {
-  //     this.seen = false
-  //     this.$store.dispatch('getAnswers', id)
-  //   }
-  // },
-  // computed: {
-  //   allQuestions () {
-  //     return this.$store.state.allQuestions
-  //   }
-  // },
-  // created () {
-  //   this.$store.dispatch('getAllQuestions')
-  // }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .link-answer{
+  float: left;
   margin-top: 10px;
 }
 textarea{
@@ -79,9 +95,8 @@ textarea{
   border: 2px solid #dedede;
   margin-bottom: 15px;
 }
-.box-top{
+.box-top, .box-bottom{
   padding: 10px;
-  text-align: left ;
 }
 .box-setting{
   background-color: rgba(90,93,95,0.7);
@@ -97,7 +112,7 @@ li{
   list-style: none;
   display: inline-block;
 }
-.right{
+.right, .box-bottom{
   text-align: right;
 }
 .vote{
@@ -105,13 +120,7 @@ li{
   border-radius: 50%;
   padding: 10px;
 }
+.left, .box-top{
+  text-align: left;
+}
 </style>
-
-
-<!-- <div class="box-bottom">
-//         <textarea class="form-control"></textarea>
-//         <button class="btn btn-small">Respon</button>
-//         <a class="link-answer" type="button" 
-//          @click.prevent="getAnswers(question._id)">Show This Answer</a>
-//         <answerlist >{{question.answers}}</answerlist>
-//       </div> -->

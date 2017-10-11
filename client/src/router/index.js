@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import dashboard from '@/components/dashboard'
+import detailQuestion from '@/components/detailQuestion'
 
 Vue.use(Router)
 
@@ -13,8 +14,10 @@ export default new Router({
       component: dashboard
     },
     {
-      path: '/question/',
-      component: dashboard
+      path: '/questions/:id',
+      name: 'question',
+      component: detailQuestion,
+      props: true
     }
   ]
 })

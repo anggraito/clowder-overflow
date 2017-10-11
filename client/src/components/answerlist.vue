@@ -1,24 +1,24 @@
 <template>
   <div>
-    <div class="box-answer" v-for="answer in Answers">
+    <div class="box-answer" v-for="answer in answers">
       <p><span class="rmv glyphicon glyphicon-remove" aria-hidden="true"></span></p>
-      <p><span class="glyphicon responder-name glyphicon-user" aria-hidden="true"> {{answer.author.username}}: </span>
-      {{answer.answer}}</p>
+      <p><span class="glyphicon responder-name glyphicon-user" aria-hidden="true">{{answer.author}}</span>
+      {{ answer.answer }} </p>
       <ul class="vote-answer">
         <li><span class="glyphicon vote glyphicon-thumbs-up" aria-hidden="true"></span></li>
         <li><span class="glyphicon vote glyphicon-thumbs-down" aria-hidden="true"></span></li>
-        <li> {{answer.time}} </li>
+        <li>{{ answer.createdAt }}</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-// import {ma pActions} from 'vuex'
+// import { mapState, mapActions } from 'vuex'
 export default {
-  computed: {
-    Answers () {
-      return this.$store.state.oneAnswer
+  props: ['answers'],
+  data () {
+    return {
     }
   }
 }
