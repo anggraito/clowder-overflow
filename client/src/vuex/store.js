@@ -35,7 +35,7 @@ const store = new Vuex.Store({
     setError (state, payload) {
       state.msgError = payload
     },
-    saveQuest (state, payload) {
+    saveQuestion (state, payload) {
       state.questions.push(payload)
       Router.push('/questions')
     },

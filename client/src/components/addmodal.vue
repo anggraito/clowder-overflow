@@ -12,13 +12,13 @@
             <p> user </p>
             <div class="form-group">
               <label for="title">Title of Topic</label>
-              <input type="text" class="form-control" id="title" name="title" placeholder="-Create Topic-">
+              <input v-model="newQuest.title" type="text" class="form-control" id="title" name="title" placeholder="-Create Topic-">
             </div>
             <div class="form-group">
               <label for="question">Topic</label>
-              <textarea type="text" class="form-control" id="question" name="question" placeholder="-Type topic descriptions-"></textarea>
+              <textarea v-model="newQuest.question" type="text" class="form-control" id="question" name="question" placeholder="-Type topic descriptions-"></textarea>
             </div>
-            <button type="submit" class="btn btn-default" @click="addQuestion">Submit</button>
+            <button type="submit" class="btn btn-default" @click="beforeSubmit()">Submit</button>
           </form>
         </div>
       </div>
@@ -27,13 +27,38 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'dash',
   data () {
     return {
       title: 'Welcome to the dashboard',
-      user: 'user'
+      user: 'user',
+      token: null,
+      newQuest: {
+        title: '',
+        question: ''
+      }
     }
+  },
+  methods: {
+    ...mapActions([
+      'submitQuestion'
+    ]),
+    beforeSubmit () {
+      if (this.newQuest.title === '') {
+        alert('title field can\'t null')
+      } else if (this.newQuest.question === '') {
+        alert('question field can\'t null')
+      } else {
+        this.submitQuestion(this.newQuest)
+        this.newQuest.title = ''
+        this.newQuest.question = ''
+      }
+    }
+  },
+  mounted () {
+    this.token = localStorage.getItem('token')
   }
 }
 </script>
